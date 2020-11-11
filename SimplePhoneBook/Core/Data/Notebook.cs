@@ -33,7 +33,7 @@ namespace SimplePhoneBook.Core.Data
             }
             else
             {
-                return;
+                throw new KeyNotFoundException();
             }
             switch (type)
             {

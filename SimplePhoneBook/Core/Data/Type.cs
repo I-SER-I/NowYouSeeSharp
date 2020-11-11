@@ -2,8 +2,8 @@
 {
     public enum Type
     {
+        Surname = 1,
         Name,
-        Surname,
         MiddleName,
         PhoneNumber,
         Country,

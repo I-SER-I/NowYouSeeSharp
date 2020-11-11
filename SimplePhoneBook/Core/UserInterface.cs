@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Globalization;
 using SimplePhoneBook.Core.Data;
 using SimplePhoneBook.Core.Data.Note;
+using Type = SimplePhoneBook.Core.Data.Type;
 
 namespace SimplePhoneBook.Core
 {
     public class UserInterface
     {
-        private readonly List<string> _parameters = new List<string>()
+        private readonly Dictionary<Type, string> _parameters = new Dictionary<Type, string>()
         {
-            "surname",
-            "name",
-            "middle name*",
-            "phone number",
-            "country",
-            "birthday date*",
-            "organization*",
-            "job*",
-            "some notes*"
+            {Type.Surname, "surname"},
+            {Type.Name, "name"},
+            {Type.MiddleName, "middle name*"},
+            {Type.PhoneNumber, "phone number"},
+            {Type.Country, "country"},
+            {Type.BirthdayDate, "birthday date*"},
+            {Type.Organization, "organization*"},
+            {Type.Job, "job*"},
+            {Type.Notes, "some notes*"}
         };
 
         private string GetTextByParameter(string parameter)
@@ -30,75 +31,75 @@ namespace SimplePhoneBook.Core
                 case "organization*":
                 case "job*":
                 case "some notes*":
-                    {
-                        text = Console.ReadLine();
-                        break;
-                    }
+                {
+                    text = Console.ReadLine();
+                    break;
+                }
                 case "phone number":
+                {
+                    while (true)
                     {
-                        while (true)
+                        try
                         {
-                            try
-                            {
-                                if (!long.TryParse(Console.ReadLine(), out var number))
-                                    throw new ArgumentException();
-                                text = number.ToString();
-                                break;
-                            }
-                            catch (ArgumentException)
-                            {
-                                PrintError("Incorrect text");
-                                Console.Write($"\t\tAdd {parameter}: ");
-                            }
+                            if (!long.TryParse(Console.ReadLine(), out var number))
+                                throw new ArgumentException();
+                            text = number.ToString();
+                            break;
                         }
-
-                        break;
+                        catch (ArgumentException)
+                        {
+                            PrintError("Incorrect text");
+                            Console.Write($"\t\tAdd {parameter}: ");
+                        }
                     }
+
+                    break;
+                }
                 case "surname":
                 case "name":
                 case "country":
+                {
+                    while (true)
                     {
-                        while (true)
+                        text = Console.ReadLine();
+                        if (text != string.Empty)
+                            break;
+                        PrintError("Empty text");
+                        Console.Write($"\t\tAdd {parameter}: ");
+                    }
+
+                    break;
+                }
+                case "birthday date*":
+                {
+                    while (true)
+                    {
+                        text = Console.ReadLine();
+                        try
                         {
-                            text = Console.ReadLine();
-                            if (text != string.Empty)
+                            if (text == string.Empty)
+                            {
+                                text = DateTime.MinValue.ToString(CultureInfo.InvariantCulture);
                                 break;
-                            PrintError("Empty text");
+                            }
+
+                            if (!DateTime.TryParse(text, out var date))
+                            {
+                                throw new ArgumentException();
+                            }
+
+                            text = date.ToString(CultureInfo.InvariantCulture);
+                            break;
+                        }
+                        catch (ArgumentException)
+                        {
+                            PrintError("Incorrect text");
                             Console.Write($"\t\tAdd {parameter}: ");
                         }
-
-                        break;
                     }
-                case "birthday date*":
-                    {
-                        while (true)
-                        {
-                            text = Console.ReadLine();
-                            try
-                            {
-                                if (text == string.Empty)
-                                {
-                                    text = DateTime.MinValue.ToString(CultureInfo.InvariantCulture);
-                                    break;
-                                }
 
-                                if (!DateTime.TryParse(text, out var date))
-                                {
-                                    throw new ArgumentException();
-                                }
-
-                                text = date.ToString(CultureInfo.InvariantCulture);
-                                break;
-                            }
-                            catch (ArgumentException)
-                            {
-                                PrintError("Incorrect text");
-                                Console.Write($"\t\tAdd {parameter}: ");
-                            }
-                        }
-
-                        break;
-                    }
+                    break;
+                }
             }
 
             return text;
@@ -111,8 +112,8 @@ namespace SimplePhoneBook.Core
             Console.WriteLine("\tEnter the following parameters: ");
             foreach (var parameter in _parameters)
             {
-                Console.Write($"\t\tAdd {parameter}: ");
-                string text = GetTextByParameter(parameter);
+                Console.Write($"\t\tAdd {parameter.Value}: ");
+                string text = GetTextByParameter(parameter.Value);
                 info.Add(text);
             }
 
@@ -140,6 +141,29 @@ namespace SimplePhoneBook.Core
                     : new NoteName(names[1], names[0], names[2]);
         }
 
+        private Type ChooseType()
+        {
+            Console.WriteLine();
+            Console.WriteLine(
+                "\tsurname - 1\n" +
+                "\tname - 2\n" +
+                "\tmiddle name* - 3\n" +
+                "\tphone number - 4\n" +
+                "\tcountry - 5\n" +
+                "\tbirthday date* - 6\n" +
+                "\torganization* - 7\n" +
+                "\tjob* - 8\n" +
+                "\tsome notes* - 9");
+            Console.Write("\tChoose the parameter" +
+                          "\n\tyou want to change: ");
+            if (!Enum.TryParse<Type>(Console.ReadLine(), out var type))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            return type;
+        }
+
         private enum Commands
         {
             CreateNote = 1,
@@ -149,11 +173,12 @@ namespace SimplePhoneBook.Core
             ShowAllNotes,
             Exit,
         }
+
         public void Start()
         {
             Console.WriteLine("\t\tWelcome to a simple notebook!");
             Notebook notebook = new Notebook();
-            Commands? command = null;
+            Commands command = Commands.CreateNote;
             while (command != Commands.Exit)
             {
                 Console.WriteLine();
@@ -193,7 +218,11 @@ namespace SimplePhoneBook.Core
                             notebook.CreateNote(noteName, noteInfo);
                             break;
                         case Commands.EditNote:
-                            //notebook.ReadNote(GetFullName(), , text);
+                            var name = GetFullName();
+                            var type = ChooseType();
+                            Console.Write("\tAdd text: ");
+                            var text = GetTextByParameter(_parameters[type]);
+                            notebook.EditNote(name, type, text);
                             break;
                         case Commands.DeleteNote:
                             notebook.RemoveNote(GetFullName());
