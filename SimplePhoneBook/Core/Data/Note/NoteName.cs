@@ -1,35 +1,37 @@
-﻿namespace SimplePhoneBook.Core.Data.Note
+﻿using System;
+
+namespace SimplePhoneBook.Core.Data.Note
 {
     public class NoteName
     {
-        private string _name;
-        private string _surname;
-        private string _middleName;
+        private String _name;
+        private String _surname;
+        private String _middleName;
 
-        public NoteName(string name, string surname, string middleName)
+        public NoteName(String name, String surname, String middleName)
         {
             _name = name;
             _surname = surname;
             _middleName = middleName;
         }
 
-        public NoteName(string name, string surname)
+        public NoteName(String name, String surname)
         {
             _name = name;
             _surname = surname;
             _middleName = string.Empty;
         }
 
-        public void SetName(string name) =>
+        public void SetName(String name) =>
             _name = name;
 
-        public void SetSurname(string surname) =>
+        public void SetSurname(String surname) =>
             _surname = surname;
 
-        public void SetMiddleName(string middleName) =>
+        public void SetMiddleName(String middleName) =>
             _middleName = middleName;
 
-        public override string ToString() =>
+        public override String ToString() =>
             $"\t{_surname} {_name} {_middleName}";
     }
 }

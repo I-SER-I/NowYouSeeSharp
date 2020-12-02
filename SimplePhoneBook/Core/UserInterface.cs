@@ -9,7 +9,7 @@ namespace SimplePhoneBook.Core
 {
     public class UserInterface
     {
-        private readonly Dictionary<Type, string> _parameters = new Dictionary<Type, string>()
+        private readonly Dictionary<Type, String> _parameters = new Dictionary<Type, String>()
         {
             {Type.Surname, "surname"},
             {Type.Name, "name"},
@@ -22,7 +22,7 @@ namespace SimplePhoneBook.Core
             {Type.Notes, "some notes*"}
         };
 
-        private string GetTextByParameter(string parameter)
+        private String GetTextByParameter(String parameter)
         {
             var text = string.Empty;
             switch (parameter)
@@ -105,22 +105,22 @@ namespace SimplePhoneBook.Core
             return text;
         }
 
-        private List<string> GetListInputs()
+        private List<String> GetListInputs()
         {
-            var info = new List<string>();
+            var info = new List<String>();
             Console.WriteLine("\tParameter with * is optional, to skip press enter");
             Console.WriteLine("\tEnter the following parameters: ");
             foreach (var parameter in _parameters)
             {
                 Console.Write($"\t\tAdd {parameter.Value}: ");
-                string text = GetTextByParameter(parameter.Value);
+                String text = GetTextByParameter(parameter.Value);
                 info.Add(text);
             }
 
             return info;
         }
 
-        private void PrintError(string errorMessage)
+        private void PrintError(String errorMessage)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"\t\t  {errorMessage}. Try again");

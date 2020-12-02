@@ -4,14 +4,14 @@ namespace SimplePhoneBook.Core.Data.Note
 {
     public class NoteInfo
     {
-        public long PhoneNumber { get; set; }
-        public string Country { get; set; }
+        public Int64 PhoneNumber { get; set; }
+        public String Country { get; set; }
         public DateTime BirthdayDate { get; set; }
-        public string Organization { get; set; }
-        public string Job { get; set; }
-        public string Notes { get; set; }
+        public String Organization { get; set; }
+        public String Job { get; set; }
+        public String Notes { get; set; }
 
-        public NoteInfo(long phoneNumber, string country, DateTime birthdayDate, string organization, string job, string notes)
+        public NoteInfo(Int64 phoneNumber, String country, DateTime birthdayDate, String organization, String job, String notes)
         {
             PhoneNumber = phoneNumber;
             Country = country;
@@ -21,9 +21,9 @@ namespace SimplePhoneBook.Core.Data.Note
             Notes = notes;
         }
 
-        public override string ToString()
+        public override String ToString()
         {
-            string result = $"\tphone: {PhoneNumber}\n" +
+            String result = $"\tphone: {PhoneNumber}\n" +
                             $"\tcountry: {Country}\n";
             if (BirthdayDate != DateTime.MinValue)
             {

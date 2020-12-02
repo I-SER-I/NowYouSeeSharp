@@ -6,7 +6,7 @@ namespace SimplePhoneBook.Core.Data
 {
     public class Notebook
     {
-        private readonly Dictionary<string, NoteInfo> _note = new Dictionary<string, NoteInfo>();
+        private readonly Dictionary<String, NoteInfo> _note = new Dictionary<String, NoteInfo>();
 
         public void CreateNote(NoteName noteName, NoteInfo info) => _note.Add(noteName.ToString(), info);
 
@@ -23,7 +23,7 @@ namespace SimplePhoneBook.Core.Data
             }
         }
 
-        public void EditNote(NoteName noteName, Type type, string text)
+        public void EditNote(NoteName noteName, Type type, String text)
         {
             var name = noteName.ToString();
             NoteInfo noteInfo;
