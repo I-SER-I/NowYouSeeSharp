@@ -15,6 +15,7 @@ namespace SecurityThreatDataParser.UI
         private readonly List<ThreatInfo> _difPrevList = new List<ThreatInfo>();
         private readonly List<ICloneable> _prevList = new List<ICloneable>();
         public Int32 CountOfUpdated = -1;
+
         public ComparisonWindow()
         {
             InitializeComponent();
@@ -41,8 +42,8 @@ namespace SecurityThreatDataParser.UI
 
                 var metrics = MainWindow.EnumerateRisks();
                 MainWindow.FullListOfRisks = metrics;
-                var count = MainWindow.FullListOfRisks.Count > _prevList.Count 
-                    ? _prevList.Count 
+                var count = MainWindow.FullListOfRisks.Count > _prevList.Count
+                    ? _prevList.Count
                     : MainWindow.FullListOfRisks.Count;
                 for (var i = 0; i < count; i++)
                 {
