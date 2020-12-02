@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>coolpepeIco.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.95.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.95.3\lib\net46\ClosedXML.dll</HintPath>
@@ -132,6 +135,8 @@
   <ItemGroup>
     <None Include="UI\App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="coolpepeIco.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
